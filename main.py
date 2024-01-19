@@ -3,6 +3,8 @@ import pandas as pd
 from scipy.io import loadmat
 
 def load_data(nb_action, nb_sujet, nb_essai, data):
+    """
+    """
     try:
         file = loadmat("./imu_data/a{0}_s{1}_t{2}_inertial.mat".format(nb_action, nb_sujet, nb_essai))
         file_data = file['d_iner']

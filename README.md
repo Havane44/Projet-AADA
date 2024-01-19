@@ -14,14 +14,9 @@
     - `d_iner` : un array qui contient toutes les données du fichier
 
 ## To-Do : 
-- [ ] Ecrire une fonction “load_data” qui permet de charger les données sur python (vous pouvez utilisez la fonction loadmat de la bibliothèque scipy). La fonction doit renvoyer un “dataframe” organisé comme suite :
-    - Colonne 0-2 : contiennent les données de l’accéléromètre suivant les trois axes.
-    - Colonne 3-5 : contiennent les données du gyroscope suivant les trois axes.
-    - Colonne 6 : contient l’identifiant du sujet (1 à 8).
-    - Colonne 7 : contient l’identifiant de l’essai (1 à 4).
-    - Colonne 8 : contient l’identifiant (l’étiquette) de l’action (1 à 27).
+- [x] Ecrire une fonction “load_data” qui permet de charger les données sur Python.
 
-- [ ] Ecrire une fonction “tracer_signal” qui permet de tracer les trois signaux (x, y, z) d’un capteur correspondant à une action. Cette fonction prend 5 entrées :
+- [x] Ecrire une fonction “tracer_signal” qui permet de tracer les trois signaux (x, y, z) d’un capteur correspondant à une action. Cette fonction prend 5 entrées :
     - Le dataframe (renvoyer par la fonction “load_data”).
     - Le capteur (1 : accéléromètre, 2 : gyroscope).
     - Le numéro de l’action.
