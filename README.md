@@ -1,33 +1,16 @@
 # Projet de classification - AADA
 
-**A propos des données :**
-- 27 actions différentes
-- 8 sujets
-- Les sujets ont réalisé chaque action 4 fois => 8x27x4 = 864 enregistrements
-- 6 données par enregistrement (les 3 axes de l'accéléromètre et du gyroscope)
+Auteurs : 
+- Yahya NASSIF
+- Antoine JONCHERAY
 
-**A propos des fichiers .mat :**
-- Dictionnaire python avec les champs suivants : 
-    - `__header__` : infos sur le fichier
-    - `__version_` : version du fichier
-    - `__globals__` : c'est vide 
-    - `d_iner` : un array qui contient toutes les données du fichier
+Fichiers du projet de Data Mining & Machine Learning.
 
-## To-Do : 
-- [x] Ecrire une fonction “load_data” qui permet de charger les données sur Python.
+## A propos de l'organisation des fichiers :
 
-- [x] Ecrire une fonction “tracer_signal” qui permet de tracer les trois signaux (x, y, z) d’un capteur correspondant à une action. Cette fonction prend 5 entrées :
-    - Le dataframe (renvoyer par la fonction “load_data”).
-    - Le capteur (1 : accéléromètre, 2 : gyroscope).
-    - Le numéro de l’action.
-    - Le numéro du sujet.
-    - Le numéro de l’essai.
+Les principaux fichiers sont :
 
-- [ ] Ecrire une fonction ”feature_extraction” qui prend en entrée le “dataframe” crée et calcule pour chaque action un vecteur d’attributs.
-
-*Exemple d'attributs : moyenne, moyenne quadratique, écart-type, médiane, quartiles, coefficient d’asymétrie, Kurtosis, entropie, énergie, maxima et minima, coefficient de
-corrélation, histogramme, passages par zéro, nombre d’occurrences de pics.*
-
-- [ ] Créez une fonction qui permet de calculer le vecteur des moyennes et des l’écart-types sur les attributs d’apprentissage (la dimensions des vecteurs doit être égale aux nombre d’attributs calculés), puis qui soustrait ensuite le vecteur moyenne des données d’apprentissage et de test et qui enfin divise le tout par l’écart-type.
-
-- [ ] 
+- `main.ipynb` : Notebook Jupyter
+- `fonctions.py` : Les fonctions à coder tout au long du projet
+- `préparationDesDonnées.py` : script pour construire le dataset à partir des fichiers .mat et les ensembles d'apprentissage et de validation
+- `modèles.py` :  script de construction des modèles de classification
