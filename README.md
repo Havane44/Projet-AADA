@@ -62,3 +62,32 @@ Version 1 :
 ### Machines à vecteur de support
 
 ### K-plus proches voisins
+
+## To-Do list : 
+- [x] Fonction `load_data()`
+- [x] Fonction `tracer_signal()`
+- Fonctions `feature_extraction()`
+    - [x] Moyenne
+    - [x] Ecart-type
+- Arbre de décision
+    - [x] Construction
+    - [x] Test
+    - [ ] Amélioration
+- Réseau de neurones
+    - [x] Construction
+    - [x] Test
+    - [ ] Amélioration
+- K-plus proches voisins
+    - [ ] Construction
+    - [ ] Test
+    - [ ] Amélioration
+- Machine à vecteur de support
+    - [ ] Construction
+    - [ ] Test
+    - [ ] Amélioration
+- Fonctions pour calculer les métriques des performances
+    - [ ] Précision
+    - [ ] Rappel
+    - [ ] F-Score
+    - [ ] Exactitude (accuracy)
+- Fonction pour tracer la matrice de confusion
