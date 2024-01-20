@@ -26,7 +26,7 @@ Les principaux fichiers sont :
 - progress
 - matplotlib
 
-Pour mettre en place l'environnement pour lancer les scripts : 
+Pour mettre en place l'environnement afin de lancer les scripts : 
 ```bash
 git clone https://github.com/Havane44/Projet-AADA.git
 cd Projet-AADA
@@ -38,3 +38,27 @@ pip install pandas scikit-learn numpy scipy tensorflow progress matplotlib
 # Pour construire les datasets à partir des fichiers .mat
 python3 dataProcessing.py
 ```
+
+## Performance des classifieurs
+
+### Arbres de décision
+
+Version 1 : 
+- Profondeur : 30
+- Précision : 30.92%
+
+Version 2 : 
+- Profondeur : 
+- Précision : 
+
+### Réseaux de neurones
+
+Version 1 : 
+- Deux couches cachées à 128 et 64 neurones (fonction d'activation : relu)
+- Couche de sortie avec 27 neurones (fonction d'activation : softmax)
+- 50 epochs, batchs de 100
+- Précision : 38%
+
+### Machines à vecteur de support
+
+### K-plus proches voisins
