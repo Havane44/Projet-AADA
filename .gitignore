@@ -1,6 +1,8 @@
 env/
 imu_data/
-.png
 __pycache__/
 models/
+prédictions/
+
+.png
 .keras

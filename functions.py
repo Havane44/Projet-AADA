@@ -4,12 +4,19 @@
 # ---------------------------------------------------------
 
 from scipy.io import loadmat
+from sklearn.metrics import classification_report, confusion_matrix
+from seaborn import heatmap
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# ---------------------------------------------------------
+# Partie 6 : Chargement des données
+# ---------------------------------------------------------
+
 def load_data(nb_action, nb_sujet, nb_essai, data):
     """
-    Fonction pour charger et lire les fichiers .mat
+    Fonction pour charger et lire un fichier .mat
     """
     try:
         file = loadmat("./imu_data/a{0}_s{1}_t{2}_inertial.mat".format(nb_action, nb_sujet, nb_essai))
@@ -26,6 +33,31 @@ def load_data(nb_action, nb_sujet, nb_essai, data):
             data["id_action"].append(nb_action)
     except:
         print("fichier a{0}_s{1}_t{2}_inertial.mat manquant".format(nb_action, nb_sujet, nb_essai))
+
+def read_all_mat_files() -> pd.DataFrame: 
+    """
+    Fonction qui lit tous les fichiers .mat et construit un dataframe contenant toutes les données.
+    """
+
+    data = {
+        "accéléromètre_X": [],
+        "accéléromètre_Y": [],
+        "accéléromètre_Z": [],
+        "gyroscope_X": [],
+        "gyroscope_Y": [],
+        "gyroscope_Z": [],
+        "id_sujet": [],
+        "id_essai": [],
+        "id_action": []
+    }
+
+    for action in range(1, 28):
+        for sujet in range(1, 9):
+            for essai in range(1, 5):
+                # lire le contenu du fichier et l'ajouter au dataframe
+                load_data(action, sujet, essai, data)
+
+    return pd.DataFrame(data)
 
 def tracer_signal(dataframe, capteur, num_action, num_sujet, num_essai):
     """
@@ -77,11 +109,13 @@ def tracer_signal(dataframe, capteur, num_action, num_sujet, num_essai):
     plt.tight_layout()
     plt.show()
 
-# Partie 7 : Calcul des attributs (moyenne et écart-type pour l'instant)
-# Chaque action aura un vecteur de 12 de long avec la moyenne et l'écart-type des 6 capteurs
+# ---------------------------------------------------------
+# Partie 7 : Calcul des attributs (moyenne et écart-type)
+# ---------------------------------------------------------
+
 def feature_extraction_moyenne(dataframe: pd.DataFrame):
     """
-
+    Fonction qui calcule la moyenne des échantillons pour chaque type d'action
     """
     
     res = []
@@ -100,7 +134,7 @@ def feature_extraction_moyenne(dataframe: pd.DataFrame):
 
 def feature_extraction_ecart_type(dataframe: pd.DataFrame):
     """
-
+    Fonction qui calcule l'écart-type des échantillons pour chaque type d'action
     """
 
     res = []
@@ -117,10 +151,13 @@ def feature_extraction_ecart_type(dataframe: pd.DataFrame):
                     ])
     return res
 
-# Partie 8 : normalisation des données
+# ---------------------------------------------------------
+# Partie 8 : Préparation des données
+# ---------------------------------------------------------
+
 def normalize_data(data: pd.DataFrame):
     """
-    
+    Fonction pour séparer et normaliser les données grâce à la moyenne et l'écart-type
     """
     
     # Division du dataset original en 4 datasets (apprentissage & test)
@@ -157,3 +194,34 @@ def normalize_data(data: pd.DataFrame):
         testing_dataset.at[index,'gyroscope_Z'] = (row['gyroscope_Z'] - moyennes[int(row['id_action']) - 1][5])/(ecarts_types[int(row['id_action']) - 1][5])
     
     return training_dataset, training_labels, testing_dataset, testing_labels
+
+# ---------------------------------------------------------
+# Partie 11 : calcul des métriques utiles pour 
+# l'évaluation du modèle
+# ---------------------------------------------------------
+
+def evaluation(true_labels, predicted_labels):
+    target_names = ['Action {0}'.format(i) for i in range(1, 28)]
+    print(classification_report(true_labels, predicted_labels, target_names=target_names))
+
+def confusion_matrix_csv(true_labels, predicted_labels):
+    """
+    
+    """
+
+    actions = ['Action {0}'.format(i) for i in range(1, 28)]
+    pd.DataFrame(confusion_matrix(true_labels, predicted_labels), columns=actions, index=actions).to_csv("matrice_de_confusion.csv")
+
+def confusion_matrix_png(true_labels, predicted_labels):
+    """
+
+    """
+    
+    heatmap(confusion_matrix(true_labels, predicted_labels), annot=True, fmt='d', cmap='Blues',
+                xticklabels=[str(i) for i in range(1, 28)],
+                yticklabels=[str(i) for i in range(1, 28)])
+    plt.xlabel('Prédictions')
+    plt.ylabel('Vraies étiquettes')
+    plt.title('Matrice de Confusion')
+    plt.show()
+    plt.savefig("matrice_de_confusion.png")

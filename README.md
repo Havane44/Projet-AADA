@@ -85,9 +85,5 @@ Version 1 :
     - [ ] Construction
     - [ ] Test
     - [ ] Amélioration
-- Fonctions pour calculer les métriques des performances
-    - [ ] Précision
-    - [ ] Rappel
-    - [ ] F-Score
-    - [ ] Exactitude (accuracy)
-- Fonction pour tracer la matrice de confusion
+- [x] Fonction pour calculer les métriques des performances
+- [x] Fonction pour tracer la matrice de confusion

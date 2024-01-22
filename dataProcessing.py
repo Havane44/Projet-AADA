@@ -4,9 +4,9 @@
 # sous la forme de fichiers .csv
 # ---------------------------------------------------------
 
-import numpy as np 
-import pandas as pd
-from scipy.io import loadmat
+# import numpy as np 
+# import pandas as pd
+# from scipy.io import loadmat
 
 from functions import *
 
@@ -16,26 +16,8 @@ from functions import *
 
 print("Construction du jeu de données en cours...")
 
-data = {
-    "accéléromètre_X": [],
-    "accéléromètre_Y": [],
-    "accéléromètre_Z": [],
-    "gyroscope_X": [],
-    "gyroscope_Y": [],
-    "gyroscope_Z": [],
-    "id_sujet": [],
-    "id_essai": [],
-    "id_action": []
-}
-
-for action in range(1, 28):
-    for sujet in range(1, 9):
-        for essai in range(1, 5):
-            # lire le contenu du fichier et l'ajouter au dataframe
-            # appeler la fonction qui lit le fichier souhaité
-            load_data(action, sujet, essai, data)
-
-data = pd.DataFrame(data)
+data = read_all_mat_files()
+# Enregistrement du DataFrame
 data.to_csv('dataset_imu.csv')
 
 print("Construction du jeu de données terminé.")
@@ -47,9 +29,6 @@ print("Construction du jeu de données terminé.")
 print("Division du jeu de données en cours...")
 
 training_dataset, training_labels, testing_dataset, testing_labels = normalize_data(data)
-
-# training_dataset.drop('id_action', axis=1)
-# testing_dataset.drop('id_action', axis=1)
 
 # On supprime les 3 dernières colonnes pour ne garder que les données de l'accéléromètre et du gyroscope
 training_dataset.drop(columns=[training_dataset.columns[-1]], inplace=True)

@@ -4,12 +4,17 @@
 # ---------------------------------------------------------
 
 from sklearn import tree
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.tree import export_graphviz
 from time import time
 from progress.bar import Bar
+from functions import evaluation, confusion_matrix_csv, confusion_matrix_png
+
 import pandas as pd
-import numpy as np
+# import numpy as np
 import matplotlib.pyplot as plt
+import graphviz
+import seaborn as sns
 
 # ---------------------------------------------------------
 # Importation des données
@@ -25,11 +30,6 @@ testing_labels = pd.read_csv('testing_labels.csv').to_numpy()[:, 1]
 end = time()
 print("Importation des données terminée en", end-start, "secondes")
 
-print(training_dataset[0])
-print(training_labels[0])
-print(testing_dataset[0])
-print(testing_labels[0])
-
 # ---------------------------------------------------------
 # Construction d'un arbre de décision
 # ---------------------------------------------------------
@@ -38,6 +38,7 @@ print("Entraînement de l'arbre de décision en cours...")
 start = time()
 
 # Construction et entraînement d'un arbre de décision
+# decisionTree = tree.DecisionTreeClassifier(max_depth=20, min_samples_split=2, min_samples_leaf=1)
 decisionTree = tree.DecisionTreeClassifier()
 decisionTree = decisionTree.fit(training_dataset,training_labels)
 
@@ -52,7 +53,16 @@ print("Profondeur de l'arbre : ", decisionTree.get_depth())
 #                fontsize=12,
 #                filled=True)
 # tree.plot_tree(decisionTree)
-# plt.show()
+# plt.savefig("tree.png")
+
+# dot_data = tree.export_graphviz(decisionTree, out_file=None,
+#                            feature_names=['Accel X', 'Accel Y', 'Accel Z', 'Gyro X', 'Gyro Y', 'Gyro Z'],
+#                            class_names=[str(i) for i in range(1, 28)],
+#                            filled=True, rounded=True, special_characters=True)
+
+# # Convertir le fichier DOT en image
+# graph = graphviz.Source(dot_data)
+# graph.render("decision_tree", format="png", cleanup=True)
 
 predictions = []
 bar = Bar("Prédictions sur l'ensemble de validation en cours...", max=len(testing_dataset))
@@ -61,5 +71,10 @@ for entry in testing_dataset:
     bar.next()
 bar.finish()
 
-accuracy = accuracy_score(testing_labels, predictions)
-print(f"Précision de l'arbre de décision : {accuracy * 100:.2f}%")
+print("")
+print("Evaluation du modèle : ")
+print("")
+evaluation(testing_labels, predictions)
+
+confusion_matrix_csv(testing_labels, predictions)
+confusion_matrix_png(testing_labels, predictions)
