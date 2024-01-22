@@ -4,10 +4,6 @@
 # sous la forme de fichiers .csv
 # ---------------------------------------------------------
 
-# import numpy as np 
-# import pandas as pd
-# from scipy.io import loadmat
-
 from functions import *
 
 # ---------------------------------------------------------
