@@ -4,17 +4,14 @@
 # ---------------------------------------------------------
 
 from sklearn import tree
-from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.tree import export_graphviz
 from time import time
 from progress.bar import Bar
 from functions import evaluation, confusion_matrix_csv, confusion_matrix_png
 
 import pandas as pd
-# import numpy as np
 import matplotlib.pyplot as plt
 import graphviz
-import seaborn as sns
 
 # ---------------------------------------------------------
 # Importation des données
@@ -22,10 +19,10 @@ import seaborn as sns
 print("Importation des données en cours...")
 start = time()
 
-training_dataset = pd.read_csv('training_dataset.csv').to_numpy()[:, 1:7]
-training_labels = pd.read_csv('training_labels.csv').to_numpy()[:, 1]
-testing_dataset = pd.read_csv('testing_dataset.csv').to_numpy()[:, 1:7]
-testing_labels = pd.read_csv('testing_labels.csv').to_numpy()[:, 1]
+training_dataset = pd.read_csv('/processed_data/training_dataset.csv').to_numpy()[:, 1:7]
+training_labels = pd.read_csv('./processed_data/training_labels.csv').to_numpy()[:, 1]
+testing_dataset = pd.read_csv('./processed_data/testing_dataset.csv').to_numpy()[:, 1:7]
+testing_labels = pd.read_csv('./processed_data/testing_labels.csv').to_numpy()[:, 1]
 
 end = time()
 print("Importation des données terminée en", end-start, "secondes")
@@ -37,7 +34,6 @@ print("Importation des données terminée en", end-start, "secondes")
 print("Entraînement de l'arbre de décision en cours...")
 start = time()
 
-# Construction et entraînement d'un arbre de décision
 # decisionTree = tree.DecisionTreeClassifier(max_depth=20, min_samples_split=2, min_samples_leaf=1)
 decisionTree = tree.DecisionTreeClassifier()
 decisionTree = decisionTree.fit(training_dataset,training_labels)
@@ -46,14 +42,6 @@ end = time()
 print("Entraînement de l'arbre de décision terminé en", end-start, "secondes")
 
 print("Profondeur de l'arbre : ", decisionTree.get_depth())
-
-# tree.plot_tree(decisionTree, 
-#                feature_names=['Accel X', 'Accel Y', 'Accel Z', 'Gyro X', 'Gyro Y', 'Gyro Z'], 
-#                class_names=[str(i) for i in list(range(1, 28))], 
-#                fontsize=12,
-#                filled=True)
-# tree.plot_tree(decisionTree)
-# plt.savefig("tree.png")
 
 # dot_data = tree.export_graphviz(decisionTree, out_file=None,
 #                            feature_names=['Accel X', 'Accel Y', 'Accel Z', 'Gyro X', 'Gyro Y', 'Gyro Z'],

@@ -39,9 +39,9 @@ testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
 testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
 testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
 
-training_dataset.to_csv('training_dataset.csv')
-training_labels.to_csv('training_labels.csv')
-testing_dataset.to_csv('testing_dataset.csv')
-testing_labels.to_csv('testing_labels.csv')
+training_dataset.to_csv('./processed_data/training_dataset.csv')
+training_labels.to_csv('./processed_data/training_labels.csv')
+testing_dataset.to_csv('./processed_data/testing_dataset.csv')
+testing_labels.to_csv('./processed_data/testing_labels.csv')
 
 print("Division du jeu de données terminé.")

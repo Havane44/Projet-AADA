@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from time import time
 from progress.bar import Bar
 
+from functions import confusion_matrix_png
+
 model_is_trained = True
 
 # ---------------------------------------------------------
@@ -19,10 +21,10 @@ model_is_trained = True
 print("Importation des données en cours...")
 start = time()
 
-training_dataset = pd.read_csv('training_dataset.csv').to_numpy()[:, 1:7]
-training_labels = pd.read_csv('training_labels.csv').to_numpy()[:, 1]
-testing_dataset = pd.read_csv('testing_dataset.csv').to_numpy()[:, 1:7]
-testing_labels = pd.read_csv('testing_labels.csv').to_numpy()[:, 1]
+training_dataset = pd.read_csv('./processed_data/training_dataset.csv').to_numpy()[:, 1:7]
+training_labels = pd.read_csv('./processed_data/training_labels.csv').to_numpy()[:, 1]
+testing_dataset = pd.read_csv('/processed_data/testing_dataset.csv').to_numpy()[:, 1:7]
+testing_labels = pd.read_csv('./processed_data/testing_labels.csv').to_numpy()[:, 1]
 
 end = time()
 print("Importation des données terminée en", end-start, "secondes")
@@ -79,36 +81,15 @@ else:
   model = tf.keras.models.load_model("./models/neuralNetwork_{0}_{1}.keras".format(size1, size2))
   predictions = model.predict(testing_dataset)
 
-  # result = {
-  #   "Array de la prédiction": [],
-  #   "Prédiction": [],
-  #   "Classe réelle": []
-  # }
-  # with Bar('Enregistrement des prédictions...', max=len(predictions)) as bar:
-  #   for i in range(len(predictions)):
-  #     result["Array de la prédiction"].append(predictions[i])
-  #     result["Prédiction"].append(np.argmax(predictions[i]) + 1)
-  #     result["Classe réelle"].append(testing_labels[i])
-  #     bar.next()
-  # result = pd.DataFrame(result)
-  # result.to_csv("./prédictions/predictions_{0}_{1}.csv".format(size1, size2))
+  predictions_round = [(np.argmax(predictions[i]) + 1) for i in range(len(predictions))]
+  confusion_matrix_png(testing_labels.tolist(), predictions_round)
 
   errors = 0
   with Bar('Comptage des erreurs de prédiction...', max=len(predictions)) as bar:
-    for i in range(len(predictions)):
-      if np.argmax(predictions[i]) != np.argmax(testing_labels_onehot[i]):
-        errors += 1
-      bar.next()
-
-  print("Nombre d'erreurs : " + str(errors) + " sur " + str(len(predictions)) + " prédictions")
-  print("Pourcentage d'erreurs : " + str(int(errors/len(predictions) * 100)) + "%")
-
-  errors = 0
-  with Bar("Comptage des erreurs de prédiction dans l'ensemble d'apprentissage...", max=len(predictions)) as bar:
-    for i in range(len(training_labels_onehot)):
-      if np.argmax(predictions[i]) != np.argmax(training_labels_onehot[i]):
-        errors += 1
-      bar.next()
+      for i in range(len(predictions)):
+          if np.argmax(predictions[i]) != np.argmax(testing_labels_onehot[i]):
+              errors += 1
+          bar.next()
 
   print("Nombre d'erreurs : " + str(errors) + " sur " + str(len(predictions)) + " prédictions")
   print("Pourcentage d'erreurs : " + str(int(errors/len(predictions) * 100)) + "%")

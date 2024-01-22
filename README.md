@@ -25,6 +25,7 @@ Les principaux fichiers sont :
 - tensorflow
 - progress
 - matplotlib
+- seaborn
 
 Pour mettre en place l'environnement afin de lancer les scripts : 
 ```bash
@@ -59,6 +60,12 @@ Version 1 :
 - 50 epochs, batchs de 100
 - Précision : 38%
 
+Version 2 : 
+- Deux couches cachées à 512 et 512 neurones (fonction d'activation : relu)
+- Couche de sortie avec 27 neurones (fonction d'activation : softmax)
+- 50 epochs, batchs de 100
+- Précision : 36%
+
 ### Machines à vecteur de support
 
 ### K-plus proches voisins
@@ -72,11 +79,11 @@ Version 1 :
 - Arbre de décision
     - [x] Construction
     - [x] Test
-    - [ ] Amélioration
+    - [x] Amélioration
 - Réseau de neurones
     - [x] Construction
     - [x] Test
-    - [ ] Amélioration
+    - [x] Amélioration
 - K-plus proches voisins
     - [ ] Construction
     - [ ] Test

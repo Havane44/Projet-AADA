@@ -14,7 +14,7 @@ import pandas as pd
 # Partie 6 : Chargement des données
 # ---------------------------------------------------------
 
-def load_data(nb_action, nb_sujet, nb_essai, data):
+def load_data(nb_action: int, nb_sujet: int, nb_essai: int, data):
     """
     Fonction pour charger et lire un fichier .mat
     """
@@ -59,7 +59,7 @@ def read_all_mat_files() -> pd.DataFrame:
 
     return pd.DataFrame(data)
 
-def tracer_signal(dataframe, capteur, num_action, num_sujet, num_essai):
+def tracer_signal(dataframe: pd.DataFrame, capteur: int, num_action: int, num_sujet: int, num_essai: int):
     """
     Fonction pour tracer les trois signaux d'un capteur pour une action, un sujet et un essai particulier.
     
@@ -201,12 +201,21 @@ def normalize_data(data: pd.DataFrame):
 # ---------------------------------------------------------
 
 def evaluation(true_labels, predicted_labels):
+    """
+    Affiche les principales métriques du modèle : 
+    - précision
+    - rappel
+    - F-score
+    - exactitude
+    """
+
     target_names = ['Action {0}'.format(i) for i in range(1, 28)]
     print(classification_report(true_labels, predicted_labels, target_names=target_names))
 
 def confusion_matrix_csv(true_labels, predicted_labels):
     """
-    
+    Calcule la matrice de confusion du modèle 
+    et l'enregistre au format CSV.
     """
 
     actions = ['Action {0}'.format(i) for i in range(1, 28)]
@@ -214,7 +223,7 @@ def confusion_matrix_csv(true_labels, predicted_labels):
 
 def confusion_matrix_png(true_labels, predicted_labels):
     """
-
+    Calcule la matrice de confusion du modèle et l'affiche à l'écran.
     """
     
     heatmap(confusion_matrix(true_labels, predicted_labels), annot=True, fmt='d', cmap='Blues',
@@ -224,4 +233,3 @@ def confusion_matrix_png(true_labels, predicted_labels):
     plt.ylabel('Vraies étiquettes')
     plt.title('Matrice de Confusion')
     plt.show()
-    plt.savefig("matrice_de_confusion.png")
