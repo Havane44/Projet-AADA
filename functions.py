@@ -115,14 +115,61 @@ def tracer_signal(dataframe: pd.DataFrame, capteur: int, num_action: int, num_su
 
 def feature_extraction_moyenne(dataframe: pd.DataFrame):
     """
-    Fonction qui calcule la moyenne des échantillons pour chaque type d'action
+    Fonction qui calcule la moyenne des échantillons pour une action.
+    """
+    
+    # Utilisation de pivot_table pour calculer la moyenne
+    moyenne_table = pd.pivot_table(dataframe, index=['id_sujet', 'id_essai', 'id_action'],
+                                   values=['accéléromètre_X', 'accéléromètre_Y', 'accéléromètre_Z',
+                                           'gyroscope_X', 'gyroscope_Y', 'gyroscope_Z'],
+                                   aggfunc='mean')
+    
+    return moyenne_table
+
+def feature_extraction_ecart_type(dataframe: pd.DataFrame):
+    """
+    Fonction qui calcule l'écart-type des échantillons pour chaque type d'action.
+    """
+
+    # Utilisation de pivot_table pour calculer l'écart-type
+    ecart_type_table = pd.pivot_table(dataframe, index=['id_sujet', 'id_essai', 'id_action'],
+                                      values=['accéléromètre_X', 'accéléromètre_Y', 'accéléromètre_Z',
+                                              'gyroscope_X', 'gyroscope_Y', 'gyroscope_Z'],
+                                      aggfunc='std')
+    
+    return ecart_type_table
+
+def feature_extraction_moyenne_et_ecart_type(dataframe: pd.DataFrame):
+    """
+    Fonction qui regroupe la moyenne et l'écart-type dans un seul tableau
+    """
+
+    # Calcul de la moyenne
+    moyenne_table = feature_extraction_moyenne(dataframe)
+    
+    # Calcul de l'écart-type
+    ecart_type_table = feature_extraction_ecart_type(dataframe)
+    
+    # Fusion des tables moyenne et écart-type
+    result_table = pd.merge(moyenne_table, ecart_type_table, on=['id_sujet', 'id_essai', 'id_action'],
+                            suffixes=('_moyenne', '_ecart_type'))
+    
+    result_table.reset_index(inplace=True)
+
+    return result_table
+
+def old_feature_extraction_moyenne(dataframe: pd.DataFrame):
+    """
+    Fonction qui calcule la moyenne des échantillons pour chaque type d'action.
+    Renvoie un vecteur 27x7.
+    Cette fonction est conservée uniquement pour la fonction normalize().
     """
     
     res = []
     # On cycle sur les 27 actions possibles (de 1 à 27)
     for num_action in range(1, 28):
         # Dataframe des lignes de l'action i
-        subset = dataframe[(dataframe['id_action'] == 1)]
+        subset = dataframe[(dataframe['id_action'] == num_action)]
         res.append([subset['accéléromètre_X'].mean(), 
                     subset['accéléromètre_Y'].mean(), 
                     subset['accéléromètre_Z'].mean(),
@@ -132,9 +179,11 @@ def feature_extraction_moyenne(dataframe: pd.DataFrame):
                     ])
     return res
 
-def feature_extraction_ecart_type(dataframe: pd.DataFrame):
+def old_feature_extraction_ecart_type(dataframe: pd.DataFrame):
     """
-    Fonction qui calcule l'écart-type des échantillons pour chaque type d'action
+    Fonction qui calcule l'écart-type des échantillons pour chaque type d'action.
+    Renvoie un vecteur 27x7.
+    Cette fonction est conservée uniquement pour la fonction normalize().
     """
 
     res = []
@@ -151,13 +200,15 @@ def feature_extraction_ecart_type(dataframe: pd.DataFrame):
                     ])
     return res
 
+
 # ---------------------------------------------------------
 # Partie 8 : Préparation des données
 # ---------------------------------------------------------
 
 def normalize_data(data: pd.DataFrame):
     """
-    Fonction pour séparer et normaliser les données grâce à la moyenne et l'écart-type
+    Fonction pour séparer et normaliser les données grâce à la moyenne et l'écart-type.
+    N'est plus utilisée dans le projet.
     """
     
     # Division du dataset original en 4 datasets (apprentissage & test)
@@ -173,8 +224,8 @@ def normalize_data(data: pd.DataFrame):
                            (data['id_sujet'] == 8)]
     testing_labels = testing_dataset['id_action']
     
-    moyennes = feature_extraction_moyenne(data)
-    ecarts_types = feature_extraction_ecart_type(data)
+    moyennes = old_feature_extraction_moyenne(data)
+    ecarts_types = old_feature_extraction_ecart_type(data)
 
     # Normalisation des données d'apprentissage
     for index, row in training_dataset.iterrows():
@@ -233,3 +284,6 @@ def confusion_matrix_png(true_labels, predicted_labels):
     plt.ylabel('Vraies étiquettes')
     plt.title('Matrice de Confusion')
     plt.show()
+
+if __name__ == "__main__":
+    pass

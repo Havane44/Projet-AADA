@@ -19,9 +19,11 @@ import graphviz
 print("Importation des données en cours...")
 start = time()
 
-training_dataset = pd.read_csv('/processed_data/training_dataset.csv').to_numpy()[:, 1:7]
+# On importe uniquement les moyennes et écart-types, pas les numéros de sujet etc...
+
+training_dataset = pd.read_csv('./processed_data/training_dataset.csv').to_numpy()[:, 4:16]
 training_labels = pd.read_csv('./processed_data/training_labels.csv').to_numpy()[:, 1]
-testing_dataset = pd.read_csv('./processed_data/testing_dataset.csv').to_numpy()[:, 1:7]
+testing_dataset = pd.read_csv('./processed_data/testing_dataset.csv').to_numpy()[:, 4:16]
 testing_labels = pd.read_csv('./processed_data/testing_labels.csv').to_numpy()[:, 1]
 
 end = time()
@@ -53,16 +55,16 @@ print("Profondeur de l'arbre : ", decisionTree.get_depth())
 # graph.render("decision_tree", format="png", cleanup=True)
 
 predictions = []
-bar = Bar("Prédictions sur l'ensemble de validation en cours...", max=len(testing_dataset))
+# bar = Bar("Prédictions sur l'ensemble de validation en cours...", max=len(testing_dataset))
 for entry in testing_dataset:
     predictions.append(decisionTree.predict([entry]))
-    bar.next()
-bar.finish()
+#     bar.next()
+# bar.finish()
 
 print("")
 print("Evaluation du modèle : ")
 print("")
 evaluation(testing_labels, predictions)
 
-confusion_matrix_csv(testing_labels, predictions)
+# confusion_matrix_csv(testing_labels, predictions)
 confusion_matrix_png(testing_labels, predictions)
