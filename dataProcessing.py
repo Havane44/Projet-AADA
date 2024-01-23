@@ -14,26 +14,34 @@ print("Construction du jeu de données en cours...")
 
 data = read_all_mat_files()
 # Enregistrement du DataFrame
-data.to_csv('dataset_imu.csv')
+data.to_csv('./processed_data/dataset_imu.csv')
 
 print("Construction du jeu de données terminé.")
 
 # ---------------------------------------------------------
-# Division du dataset en ensembles d'apprentissage et de validation
+# Extraction des features et division du dataset en 
+# ensembles d'apprentissage et de validation
 # ---------------------------------------------------------
 
 print("Division du jeu de données en cours...")
 
-training_dataset, training_labels, testing_dataset, testing_labels = normalize_data(data)
+# Chargement des données depuis le fichier CSV
+data = pd.read_csv("./processed_data/dataset_imu.csv")
 
-# On supprime les 3 dernières colonnes pour ne garder que les données de l'accéléromètre et du gyroscope
-training_dataset.drop(columns=[training_dataset.columns[-1]], inplace=True)
-training_dataset.drop(columns=[training_dataset.columns[-1]], inplace=True)
-training_dataset.drop(columns=[training_dataset.columns[-1]], inplace=True)
+# Appel de la fonction pour obtenir le tableau combiné
+data = feature_extraction_moyenne_et_ecart_type(data)
 
-testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
-testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
-testing_dataset.drop(columns=[testing_dataset.columns[-1]], inplace=True)
+training_dataset = data[(data['id_sujet'] == 1) | 
+                        (data['id_sujet'] == 3) | 
+                        (data['id_sujet'] == 5) | 
+                        (data['id_sujet'] == 7)]
+training_labels = training_dataset['id_action']
+    
+testing_dataset = data[(data['id_sujet'] == 2) |
+                       (data['id_sujet'] == 4) | 
+                       (data['id_sujet'] == 6) | 
+                       (data['id_sujet'] == 8)]
+testing_labels = testing_dataset['id_action']
 
 training_dataset.to_csv('./processed_data/training_dataset.csv')
 training_labels.to_csv('./processed_data/training_labels.csv')

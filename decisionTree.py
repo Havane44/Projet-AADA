@@ -45,14 +45,14 @@ print("Entraînement de l'arbre de décision terminé en", end-start, "secondes"
 
 print("Profondeur de l'arbre : ", decisionTree.get_depth())
 
-# dot_data = tree.export_graphviz(decisionTree, out_file=None,
-#                            feature_names=['Accel X', 'Accel Y', 'Accel Z', 'Gyro X', 'Gyro Y', 'Gyro Z'],
-#                            class_names=[str(i) for i in range(1, 28)],
-#                            filled=True, rounded=True, special_characters=True)
+dot_data = tree.export_graphviz(decisionTree, out_file=None,
+                           feature_names=['Moyenne A_X', 'Ecart-type A_X', 'Moyenne A_Y','Ecart-type A_Y', 'Moyenne A_Z','Ecart-type A_Y', 'Moyenne G_X','Ecart-type G_X', 'Moyenne G_Y','Ecart-type G_Y', 'Moyenne G_Z', 'Ecart-type G_Z'],
+                           class_names=[str(i) for i in range(1, 28)],
+                           filled=True, rounded=True, special_characters=True)
 
-# # Convertir le fichier DOT en image
-# graph = graphviz.Source(dot_data)
-# graph.render("decision_tree", format="png", cleanup=True)
+# Convertir le fichier DOT en image
+graph = graphviz.Source(dot_data)
+graph.render("decision_tree", format="png", cleanup=True)
 
 predictions = []
 # bar = Bar("Prédictions sur l'ensemble de validation en cours...", max=len(testing_dataset))

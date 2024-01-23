@@ -12,7 +12,7 @@ from progress.bar import Bar
 
 from functions import confusion_matrix_png
 
-model_is_trained = True
+model_is_trained = bool(input("Le modèle est-il entraîné [0 : non / 1 : oui]"))
 
 # ---------------------------------------------------------
 # Importation des données
@@ -21,9 +21,9 @@ model_is_trained = True
 print("Importation des données en cours...")
 start = time()
 
-training_dataset = pd.read_csv('./processed_data/training_dataset.csv').to_numpy()[:, 1:7]
+training_dataset = pd.read_csv('./processed_data/training_dataset.csv').to_numpy()[:, 4:16]
 training_labels = pd.read_csv('./processed_data/training_labels.csv').to_numpy()[:, 1]
-testing_dataset = pd.read_csv('/processed_data/testing_dataset.csv').to_numpy()[:, 1:7]
+testing_dataset = pd.read_csv('./processed_data/testing_dataset.csv').to_numpy()[:, 4:16]
 testing_labels = pd.read_csv('./processed_data/testing_labels.csv').to_numpy()[:, 1]
 
 end = time()
@@ -56,10 +56,10 @@ if not model_is_trained:
   # ---------------------------------------------------------
 
   hiddenLayer1 = 512
-  hiddenLayer2 = 1024
+  hiddenLayer2 = 512
 
   model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(hiddenLayer1, input_shape=(6,), activation='relu'),
+    tf.keras.layers.Dense(hiddenLayer1, input_shape=(12,), activation='relu'),
     tf.keras.layers.Dense(hiddenLayer2, activation='relu'),
     tf.keras.layers.Dense(27, activation='softmax')
   ])
@@ -70,7 +70,7 @@ if not model_is_trained:
                 loss='categorical_crossentropy',
                 metrics=['accuracy'])
 
-  history = model.fit(training_dataset, training_labels_onehot, epochs=50, batch_size=100)
+  history = model.fit(training_dataset, training_labels_onehot, epochs=100, batch_size=10)
 
   model.save("./models/neuralNetwork_{0}_{1}.keras".format(hiddenLayer1, hiddenLayer2))
 
