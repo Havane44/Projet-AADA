@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from time import time
 from progress.bar import Bar
 
-from functions import confusion_matrix_png
+from dataProcessing import confusion_matrix_png
 
 model_is_trained = bool(input("Le modèle est-il entraîné [0 : non / 1 : oui]"))
 

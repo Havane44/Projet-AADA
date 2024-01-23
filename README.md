@@ -10,9 +10,8 @@ Fichiers du projet de Data Mining & Machine Learning (2024)
 
 Les principaux fichiers sont :
 
-- `main.ipynb` : "Brouillon" utilisé pour coder les différentes parties du projet
-- `functions.py` : Les fonctions à coder tout au long du projet.
-- `dataProcessing.py` : script pour construire le dataset à partir des fichiers .mat et les ensembles d'apprentissage et de validation.
+- `main.ipynb` : "Brouillon" utilisé pour coder les différentes parties du projet.
+- `dataProcessing.py` : script contenant les fonctions à coder tout au long du projet, ainsi que la fonction pour construire le dataset à partir des fichiers .mat et les ensembles d'apprentissage et de validation.
 - `decisionTree.py` :  construction et entraînement d'un arbre de décision.
 - `neuralNetwork.py` : construction et entraînement d'un réseau de neurones avec TensorFlow.
 

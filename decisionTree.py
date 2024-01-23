@@ -6,11 +6,9 @@
 from sklearn import tree
 from sklearn.tree import export_graphviz
 from time import time
-from progress.bar import Bar
-from functions import evaluation, confusion_matrix_csv, confusion_matrix_png
+from dataProcessing import evaluation, confusion_matrix_csv, confusion_matrix_png
 
 import pandas as pd
-import matplotlib.pyplot as plt
 import graphviz
 
 # ---------------------------------------------------------
@@ -36,7 +34,6 @@ print("Importation des données terminée en", end-start, "secondes")
 print("Entraînement de l'arbre de décision en cours...")
 start = time()
 
-# decisionTree = tree.DecisionTreeClassifier(max_depth=20, min_samples_split=2, min_samples_leaf=1)
 decisionTree = tree.DecisionTreeClassifier()
 decisionTree = decisionTree.fit(training_dataset,training_labels)
 
@@ -55,11 +52,12 @@ graph = graphviz.Source(dot_data)
 graph.render("decision_tree", format="png", cleanup=True)
 
 predictions = []
-# bar = Bar("Prédictions sur l'ensemble de validation en cours...", max=len(testing_dataset))
 for entry in testing_dataset:
     predictions.append(decisionTree.predict([entry]))
-#     bar.next()
-# bar.finish()
+
+# ---------------------------------------------------------
+# Evaluation du modèle et affichage de la matrice de confusion
+# ---------------------------------------------------------
 
 print("")
 print("Evaluation du modèle : ")
